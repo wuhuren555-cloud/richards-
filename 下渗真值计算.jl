@@ -66,7 +66,7 @@ function get_mapped_params_2layer(p_latent)
     f_macro_max = 0.0 + 0.4 * sigmoid(p_latent[10]) # 允许更大裂隙截留
     split_idx = 1.5 + 7.0 * sigmoid(p_latent[11])
     
-    # 🌟 物理革新：裂隙深度参数化 (10cm 到 100cm)
+    #  物理革新：裂隙深度参数化 (10cm 到 100cm)
     Z_macro = 10.0 + 90.0 * sigmoid(p_latent[12])
     
     return[Ks_A, alpha_A, n_A, ths_A, Ks_B, alpha_B, n_B, ths_B, C_drain, f_macro_max, split_idx, Z_macro]
@@ -223,7 +223,7 @@ function run_advanced_simulation(u0, times_hours, precip_series, dates_series, p
                     max_volume_mmh = max(0.0, (pv.theta_s - theta_curr[i])) * dz / phase_dt * 0.95
                     Q_actual_matrix = min(Q_try_matrix, max_volume_mmh)
                     
-                    # 7. 🌟 绝对质量守恒：被挤出但基质装不下的水，发生“拥堵倒灌”，回到地表转为径流！
+                    # 7.  绝对质量守恒：被挤出但基质装不下的水，发生“拥堵倒灌”，回到地表转为径流！
                     Q_rejected = Q_try_matrix - Q_actual_matrix
                     
                     S_array[i] = Q_actual_matrix / dz
@@ -384,7 +384,7 @@ function process_site_data(site_id, df_site::DataFrame)
         return loss
     end
 
-    # 🌟 12 维参数多起点寻优
+    #  12 维参数多起点寻优
     opt_options_fast = Optim.Options(time_limit=15.0, iterations=500, show_trace=false)
     best_loss = Inf; best_p_init = zeros(12)
     
@@ -443,7 +443,7 @@ function process_site_data(site_id, df_site::DataFrame)
         Opt_Ks_Subsoil = fill(round(best_p[5], digits=2), N_rows), Opt_alpha_Sub = fill(round(best_p[6], digits=4), N_rows),
         Opt_n_Sub = fill(round(best_p[7], digits=3), N_rows), Opt_ths_Sub = fill(round(best_p[8], digits=3), N_rows),
         Opt_Z_Split_cm = fill(round(best_p[11] * 10.0, digits=1), N_rows), 
-        Opt_Z_Macro_cm = fill(round(best_p[12], digits=1), N_rows), # 🌟 新增保存列
+        Opt_Z_Macro_cm = fill(round(best_p[12], digits=1), N_rows), #  新增保存列
         Opt_Cdrain = fill(round(best_p[9], digits=3), N_rows),
         Opt_MacroFrac = fill(round(best_p[10], digits=3), N_rows), Average_KGE_Score = fill(round(avg_kge_final, digits=4), N_rows)
     )
